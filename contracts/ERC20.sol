@@ -125,9 +125,6 @@ contract ERC20 is Context, IERC20, IERC20Metadata {
     /**
      * @dev See {IERC20-approve}.
      *
-     * NOTE: If `amount` is the maximum `uint256`, the allowance is not updated on
-     * `transferFrom`. This is semantically equivalent to an infinite approval.
-     *
      * Requirements:
      *
      * - `spender` cannot be the zero address.
@@ -143,9 +140,6 @@ contract ERC20 is Context, IERC20, IERC20Metadata {
      * Emits an {Approval} event indicating the updated allowance. This is not
      * required by the EIP. See the note at the beginning of {ERC20}.
      *
-     * NOTE: Does not update the allowance if the current allowance
-     * is the maximum `uint256`.
-     *
      * Requirements:
      *
      * - `sender` and `recipient` cannot be the zero address.
@@ -158,15 +152,13 @@ contract ERC20 is Context, IERC20, IERC20Metadata {
         address recipient,
         uint256 amount
     ) public virtual override returns (bool) {
-        uint256 currentAllowance = _allowances[sender][_msgSender()];
-        if (currentAllowance != type(uint256).max) {
-            require(currentAllowance >= amount, "ERC20: transfer amount exceeds allowance");
-            unchecked {
-                _approve(sender, _msgSender(), currentAllowance - amount);
-            }
-        }
-
         _transfer(sender, recipient, amount);
+
+        uint256 currentAllowance = _allowances[sender][_msgSender()];
+        require(currentAllowance >= amount, "ERC20: transfer amount exceeds allowance");
+        unchecked {
+            _approve(sender, _msgSender(), currentAllowance - amount);
+        }
 
         return true;
     }
