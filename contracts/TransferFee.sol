@@ -2,6 +2,9 @@
 
 pragma solidity ^0.8.4;
 
+import "./DexPair.sol";
+
+
 contract TransferFee {
     bytes4 private constant FACTORY_SELECTOR = bytes4(keccak256(bytes('factory()')));
 

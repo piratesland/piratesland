@@ -8,6 +8,7 @@ import "./IUniswapV2Router.sol";
 import "./GasPriceController.sol";
 import "./DexListing.sol";
 import "./TransferFee.sol";
+import "./Pausable.sol";
 
 contract PLTToken is ERC20, Ownable, GasPriceController, TransferFee, DexListing, Pausable {
     

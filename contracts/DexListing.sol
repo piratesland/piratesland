@@ -3,6 +3,7 @@
 pragma solidity ^0.8.4;
 
 import "./OriginOwner.sol";
+import "./DexPair.sol";
 
 contract DexListing is OriginOwner {
 
