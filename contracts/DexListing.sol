@@ -11,30 +11,30 @@ contract DexListing is OriginOwner {
     address immutable public wbnbPair;
     address immutable public busdPair;
 
-    uint internal _listingFeePercent = 0;
-    uint internal _listingDuration;
-    uint internal _listingStartAt =  0;
+    uint internal listingFeePercent = 0;
+    uint internal listingDuration;
+    uint internal listingStartAt =  0;
 
-    bool internal _listingFinished;
+    bool internal listingFinished;
 
     constructor(
         uint listingDuration_
     )
     {
-        _listingDuration = listingDuration_;
+        listingDuration = listingDuration_;
         //PancakeSwap: Router v2  // mainnet 0x10ED43C718714eb63d5aA57B78B54704E256024E  // testnet 0x9Ac64Cc6e4415144C455BD8E4837Fea55603e5c3
         address router = address(0x9Ac64Cc6e4415144C455BD8E4837Fea55603e5c3);
         uniswapV2Router = router;
-        wbnbPair = DexPair._createPair(router, DexPair._wbnb);
-        busdPair = DexPair._createPair(router, DexPair._busd);
+        wbnbPair = DexPair._createPair(router, DexPair.wbnb);
+        busdPair = DexPair._createPair(router, DexPair.busd);
     }
 
     function _startListing()
     private
     onlyOriginOwner
     {
-        _listingStartAt = block.timestamp;
-        _listingFeePercent = 100;
+        listingStartAt = block.timestamp;
+        listingFeePercent = 100;
 
         //Owner removed, once listing started
         _removeOriginOwner();
@@ -43,21 +43,21 @@ contract DexListing is OriginOwner {
     function _finishListing()
     private
     {
-        _listingFinished = true;
+        listingFinished = true;
     }
 
     function _updateListingFee()
     private
     {
-        uint pastTime = block.timestamp - _listingStartAt; // so thoi gian tu luc bat dau listing
-        if (pastTime > _listingDuration) {
-            _listingFeePercent = 0;
+        uint pastTime = block.timestamp - listingStartAt; 
+        if (pastTime > listingDuration) {
+            listingFeePercent = 0;
         } else {
             // pastTime == 0 => fee = 100
             // pastTime == _listingDuration => fee = 0
 
-            // _listingDuration luon bang 100?  -> 
-            _listingFeePercent = 100 * (_listingDuration - pastTime) / _listingDuration;
+            // listingDuration
+            listingFeePercent = 100 * (listingDuration - pastTime) / listingDuration;
         }
     }
 
@@ -69,7 +69,7 @@ contract DexListing is OriginOwner {
     internal
     returns (uint)
     {
-        if (_listingStartAt == 0) { // chaa list add lq lan dau tien =? tra ve fee 0
+        if (listingStartAt == 0) { 
             // first addLiquidity
             if (DexPair._isPair(recipient_) && amount_ > 0) {
                 _startListing();
@@ -77,42 +77,42 @@ contract DexListing is OriginOwner {
             return 0;
         } else {
             _updateListingFee();
-            if (_listingStartAt + _listingDuration <= block.timestamp) {
+            if (listingStartAt + listingDuration <= block.timestamp) {
                 _finishListing();
             }
 
-            if (!DexPair._isPair(sender_) && !DexPair._isPair(recipient_)) { // neeus ng nhan va gui deu ko phai la pair - > fee 0
+            if (!DexPair._isPair(sender_) && !DexPair._isPair(recipient_)) { 
                 // normal transfer  
                 return 0;
             } else {
                 // swap
-                return amount_ * _listingFeePercent / 100;
+                return amount_ * listingFeePercent / 100;
             }
         }
     }
 
-    function listingDuration()
-    public
+    function getListingDuration()
+    external
     view
     returns (uint)
     {
-        return _listingDuration;
+        return listingDuration;
     }
 
-    function listingFinished()
-    public
+    function isListingFinished()
+    external
     view
     returns (bool)
     {
-        return _listingFinished;
+        return listingFinished;
     }
 
-    function listingStartAt()
-    public
+    function listingStartAtBlock()
+    external
     view
     returns (uint)
     {
-        return _listingStartAt;
+        return listingStartAt;
     }
 
 }

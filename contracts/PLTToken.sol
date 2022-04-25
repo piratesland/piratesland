@@ -42,7 +42,7 @@ contract PLTToken is ERC20, Ownable, GasPriceController, TransferFee, DexListing
         uint256 amount_
     ) internal override onlyValidGasPrice {
 
-         if (!_listingFinished) { 
+         if (!listingFinished) { 
             uint fee = _updateAndGetListingFee(sender_, recipient_, amount_);
             require(fee <= amount_, "Token: listing fee too high");
             uint transferA = amount_ - fee;
@@ -64,32 +64,32 @@ contract PLTToken is ERC20, Ownable, GasPriceController, TransferFee, DexListing
         }
     }
 
-    function addBlackList(address _address) external onlyOwner {
-        blackListedList[_address] = true;
+    function addBlackList(address add) external onlyOwner {
+        blackListedList[add] = true;
     }
 
-    function addBlackLists(address[] calldata _address) external onlyOwner {
-        uint256 count = _address.length;
+    function addBlackLists(address[] calldata listAddress) external onlyOwner {
+        uint256 count = listAddress.length;
         for (uint256 i = 0; i < count; i++) {
-            blackListedList[_address[i]] = true;
+            blackListedList[listAddress[i]] = true;
         }
     }
 
-    function removeBlackList(address _address) external onlyOwner {
-        blackListedList[_address] = false;
+    function removeBlackList(address add) external onlyOwner {
+        blackListedList[add] = false;
     }
 
-    function removeBlackLists(address[] calldata _address) external onlyOwner {
-        uint256 count = _address.length;
+    function removeBlackLists(address[] calldata listAddress) external onlyOwner {
+        uint256 count = listAddress.length;
         for (uint256 i = 0; i < count; i++) {
-            blackListedList[_address[i]] = false;
+            blackListedList[listAddress[i]] = false;
         }
     }
 
-    function setMaxAmount(uint256 _maxAmount) external onlyOwner{
-        require(_maxAmount > 200 * 10**3 * 10**18, "maxAmount too small");
-        maxAmount = _maxAmount;
-    }
+    // function setMaxAmount(uint256 _maxAmount) external onlyOwner{
+    //     require(_maxAmount > 200 * 10**3 * 10**18, "maxAmount too small");
+    //     maxAmount = _maxAmount;
+    // }
 
     /*
         Settings
@@ -121,7 +121,7 @@ contract PLTToken is ERC20, Ownable, GasPriceController, TransferFee, DexListing
      *
      * See {ERC20Pausable} and {Pausable-_pause}.
      */
-    function pause() public onlyOwner {
+    function pause() external onlyOwner {
         _pause();
     }
 
@@ -130,7 +130,7 @@ contract PLTToken is ERC20, Ownable, GasPriceController, TransferFee, DexListing
      *
      * See {ERC20Pausable} and {Pausable-_unpause}.
      */
-    function unpause() public onlyOwner {
+    function unpause() external onlyOwner {
         _unpause();
     }
 
@@ -138,13 +138,13 @@ contract PLTToken is ERC20, Ownable, GasPriceController, TransferFee, DexListing
          Withdraw
      */
 
-    function withdrawBalance() public onlyOwner {
+    function withdrawBalance() external onlyOwner {
         address payable _owner = payable(_msgSender());
         _owner.transfer(address(this).balance);
     }
 
     function withdrawTokens(address _tokenAddr, address _to)
-    public
+    external
     onlyOwner
     {
         require(

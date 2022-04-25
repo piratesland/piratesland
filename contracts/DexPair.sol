@@ -10,12 +10,12 @@ library DexPair {
     bytes4 private constant FACTORY_SELECTOR = bytes4(keccak256(bytes('factory()')));
 
     // main net
-    //address constant internal _wbnb = address(0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c);
-    //address constant internal _busd = address(0xe9e7CEA3DedcA5984780Bafc599bD69ADd087D56);
+    //address constant internal wbnb = address(0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c);
+    //address constant internal busd = address(0xe9e7CEA3DedcA5984780Bafc599bD69ADd087D56);
 
     // test net
-    address constant internal _wbnb = address(0xae13d989daC2f0dEbFf460aC112a837C89BAa7cd);
-    address constant internal _busd = address(0x78867BbEeF44f2326bF8DDd1941a4439382EF2A7);
+    address constant internal wbnb = address(0xae13d989daC2f0dEbFf460aC112a837C89BAa7cd);
+    address constant internal busd = address(0x78867BbEeF44f2326bF8DDd1941a4439382EF2A7);
 
     function _isPair(
         address pair_

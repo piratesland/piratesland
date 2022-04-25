@@ -64,7 +64,7 @@ contract OriginOwner {
     }
 
     function isOriginOwner()
-    public
+    external
     view
     returns (bool)
     {

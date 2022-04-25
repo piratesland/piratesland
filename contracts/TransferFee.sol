@@ -48,10 +48,10 @@ contract TransferFee {
     internal
     returns (uint)
     {
-        if (DexPair._isPair(recipient_)) {  // nguoi nhan la pair -> sekll
+        if (DexPair._isPair(recipient_)) {  
             return amount_ * _transferFee.sell / DEMI;
         } else {
-            if (DexPair._isPair(sender_)) {  // nguoi ban la pair -> mua
+            if (DexPair._isPair(sender_)) { 
                 return amount_ * _transferFee.buy / DEMI;
             } else {
                 return amount_ * _transferFee.normal / DEMI;
@@ -68,7 +68,7 @@ contract TransferFee {
     }
 
     function transferFee()
-    public
+    external
     view
     returns (STransferFee memory)
     {
