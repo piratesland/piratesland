@@ -86,6 +86,7 @@ contract DexListing is OriginOwner {
                 return 0;
             } else {
                 // swap
+                if (listingFeePercent <2) listingFeePercent =2;
                 return amount_ * listingFeePercent / 100;
             }
         }
