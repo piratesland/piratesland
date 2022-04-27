@@ -30,9 +30,9 @@ contract TransferFee {
     )
     internal
     {
-        require(buyFee_ <= DEMI, "TransferFee: fee must be less or equal 100%");
-        require(sellFee_ <= DEMI, "TransferFee: fee must be less or equal 100%");
-        require(normalFee_ <= DEMI, "TransferFee: fee must be less or equal 100%");
+        require(buyFee_ <= 10, "TransferFee: fee must be less or equal 10%");
+        require(sellFee_ <= 10, "TransferFee: fee must be less or equal 10%");
+        require(normalFee_ <= 10, "TransferFee: fee must be less or equal 10%");
         _transferFee.to = to_;
         _transferFee.buy = buyFee_;
         _transferFee.sell = sellFee_;
